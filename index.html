@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart DRE - Controle Financeiro Simples e Visual</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9FAFB; /* Fundo branco/cinza claro */
+            color: #374151; /* Texto escuro */
+        }
+        .header-gradient {
+            background: linear-gradient(135deg, #0a2a43 0%, #1f4a6f 100%);
+        }
+        .cta-button {
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(30, 144, 255, 0.25);
+        }
+        .content-card {
+            transition: all 0.3s ease;
+        }
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        /* Animações de entrada */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Efeito Neon Pulsante */
+        .neon-text {
+            color: #fff;
+            text-shadow:
+                0 0 5px rgba(255, 255, 255, 0.8),
+                0 0 10px rgba(77, 192, 253, 0.7),
+                0 0 20px rgba(77, 192, 253, 0.6),
+                0 0 40px rgba(77, 192, 253, 0.5),
+                0 0 60px rgba(77, 192, 253, 0.4);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                text-shadow:
+                    0 0 5px rgba(255, 255, 255, 0.8),
+                    0 0 10px rgba(77, 192, 253, 0.7),
+                    0 0 20px rgba(77, 192, 253, 0.6),
+                    0 0 40px rgba(77, 192, 253, 0.5),
+                    0 0 60px rgba(77, 192, 253, 0.4);
+            }
+            50% {
+                text-shadow:
+                    0 0 10px rgba(255, 255, 255, 1),
+                    0 0 20px rgba(77, 192, 253, 0.9),
+                    0 0 40px rgba(77, 192, 253, 0.8),
+                    0 0 80px rgba(77, 192, 253, 0.7),
+                    0 0 120px rgba(77, 192, 253, 0.6);
+            }
+        }
+
+        .dashboard-mockup {
+            width: 60vw;
+            max-width: 800px;
+            height: 40vw;
+            max-height: 500px;
+            border: 2px solid rgba(77, 192, 253, 0.3);
+            border-radius: 12px;
+            background: rgba(25, 50, 80, 0.2);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 40px rgba(77, 192, 253, 0.2);
+            padding: 1rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .mockup-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .mockup-header .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(77, 192, 253, 0.2);
+        }
+
+        .mockup-body {
+            width: 100%;
+            height: calc(100% - 32px);
+            border-top: 1px solid rgba(77, 192, 253, 0.1);
+            padding-top: 1rem;
+            display: flex;
+            align-items: flex-end;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .chart-line {
+            width: 50%;
+            height: 60%;
+            border: 2px solid rgba(77, 192, 253, 0.5);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-line::after {
+            content: '';
+            position: absolute;
+            left: -100%;
+            top: 30%;
+            width: 200%;
+            height: 2px;
+            background: #4DC0FD;
+            transform: rotate(-10deg);
+            animation: draw-line 4s ease-in-out infinite;
+        }
+
+        @keyframes draw-line {
+            0% { transform: translateX(0) rotate(-10deg); }
+            100% { transform: translateX(100%) rotate(-10deg); }
+        }
+
+        .chart-bar {
+            width: 10%;
+            background: rgba(77, 192, 253, 0.5);
+            border-radius: 4px 4px 0 0;
+            animation: grow-bar 2s ease-in-out infinite alternate;
+        }
+        .chart-bar.small { height: 30%; animation-delay: 0.5s; }
+        .chart-bar.large { height: 75%; animation-delay: 1s; }
+
+
+        @keyframes grow-bar {
+            from { height: 10%; }
+            to { height: 60%; }
+        }
+
+        .pulsating-button-animation {
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(77, 192, 253, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(77, 192, 253, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(77, 192, 253, 0);
+            }
+        }
+
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Navegação -->
+    <nav class="p-4 w-full z-50 sticky top-0 bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-wider text-gray-800">Smart DRE</h1>
+            <a href="#oferta" class="cta-button bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-blue-500 hidden sm:block">
+                Quero minha Smart DRE
+            </a>
+        </div>
+    </nav>
+
+
+    <!-- 1. Header -->
+    <header class="relative text-white overflow-hidden h-screen flex items-center justify-center text-center header-gradient">
+        
+        <div class="absolute top-20 left-10 md:left-20 text-blue-400/30 animate-pulse">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+        </div>
+        <div class="absolute bottom-20 right-10 md:right-20 text-blue-400/30 animate-pulse" style="animation-delay: 1s;">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+        </div>
+        <div class="absolute top-20 right-10 md:right-20 text-blue-400/30 animate-pulse" style="animation-delay: 0.5s;">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+        </div>
+        <div class="absolute bottom-20 left-10 md:left-20 text-blue-400/30 animate-pulse" style="animation-delay: 1.5s;">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 16v-1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </div>
+
+        <div class="relative z-10 p-6 fade-in-section is-visible">
+            <h1 class="text-7xl md:text-8xl font-black mb-2 text-white tracking-wider uppercase">Smart DRE</h1>
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight leading-tight">
+                Eleve a <span class="neon-text">Gestão</span> do seu Negócio.
+            </h2>
+            <p class="text-xl md:text-2xl text-blue-200 mb-8 max-w-3xl mx-auto">
+                Transforme dados em decisões e tenha o controle total das suas finanças com relatórios visuais e automáticos.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                 <a href="#oferta" class="cta-button w-full sm:w-auto inline-block bg-blue-500 text-white text-lg font-bold py-3 px-8 rounded-lg shadow-xl hover:bg-blue-400">
+                    Quero minha Smart DRE
+                </a>
+                <a href="#beneficios" class="cta-button w-full sm:w-auto inline-block text-white text-lg font-bold py-3 px-8 rounded-lg border-2 border-blue-400 hover:bg-blue-400/20">
+                    Ver Benefícios
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <!-- 2. Seção de Benefícios -->
+        <section id="beneficios" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Tudo o que você precisa para dominar suas finanças</h2>
+                <p class="text-lg text-gray-500 mt-2">em um só lugar.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Benefício 1 -->
+                <div class="fade-in-section content-card bg-white p-6 rounded-xl text-center border">
+                    <div class="text-blue-600 mb-4 inline-block bg-blue-100 p-3 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">DRE Automatizada</h3>
+                    <p class="text-gray-500">Relatórios gerados automaticamente para sua análise.</p>
+                </div>
+                <!-- Benefício 2 -->
+                <div class="fade-in-section content-card bg-white p-6 rounded-xl text-center border" style="transition-delay: 100ms;">
+                     <div class="text-blue-600 mb-4 inline-block bg-blue-100 p-3 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Análise de Receitas</h3>
+                    <p class="text-gray-500">Entenda de onde vem seu faturamento em detalhes.</p>
+                </div>
+                <!-- Benefício 3 -->
+                <div class="fade-in-section content-card bg-white p-6 rounded-xl text-center border" style="transition-delay: 200ms;">
+                     <div class="text-blue-600 mb-4 inline-block bg-blue-100 p-3 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Dashboard Visual</h3>
+                    <p class="text-gray-500">Gráficos intuitivos para insights rápidos e claros.</p>
+                </div>
+                <!-- Benefício 4 -->
+                <div class="fade-in-section content-card bg-white p-6 rounded-xl text-center border" style="transition-delay: 300ms;">
+                     <div class="text-blue-600 mb-4 inline-block bg-blue-100 p-3 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Projeção de Resultados</h3>
+                    <p class="text-gray-500">Planeje o futuro do seu negócio com base em dados.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção "3 Passos" -->
+        <section id="passos" class="py-16">
+            <div class="text-center mb-12">
+                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Controle financeiro em 3 passos simples</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 text-center relative">
+                 <!-- Linha conectora -->
+                 <div class="hidden md:block absolute top-1/3 left-0 w-full h-px bg-gray-300 -translate-y-4"></div>
+                <!-- Passo 1 -->
+                <div class="fade-in-section relative z-10">
+                    <div class="mx-auto w-16 h-16 flex items-center justify-center bg-blue-600 text-white text-2xl font-bold rounded-full border-4 border-gray-50">1</div>
+                    <h3 class="mt-4 text-xl font-bold text-gray-800">Faça o download</h3>
+                    <p class="mt-2 text-gray-500">Baixe a planilha base e comece a organizar seus dados de forma simples.</p>
+                </div>
+                 <!-- Passo 2 -->
+                <div class="fade-in-section relative z-10" style="transition-delay: 150ms;">
+                    <div class="mx-auto w-16 h-16 flex items-center justify-center bg-blue-600 text-white text-2xl font-bold rounded-full border-4 border-gray-50">2</div>
+                    <h3 class="mt-4 text-xl font-bold text-gray-800">Cadastre suas informações</h3>
+                    <p class="mt-2 text-gray-500">Importe seus dados para a ferramenta e veja a mágica acontecer.</p>
+                </div>
+                 <!-- Passo 3 -->
+                <div class="fade-in-section relative z-10" style="transition-delay: 300ms;">
+                    <div class="mx-auto w-16 h-16 flex items-center justify-center bg-blue-600 text-white text-2xl font-bold rounded-full border-4 border-gray-50">3</div>
+                    <h3 class="mt-4 text-xl font-bold text-gray-800">Acompanhe resultados</h3>
+                    <p class="mt-2 text-gray-500">Tenha acesso a dashboards visuais e relatórios completos em segundos.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Seção de Vídeo -->
+    <section id="video" class="py-20">
+        <div class="container mx-auto px-6 text-center">
+            <div class="text-center mb-12">
+                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Veja a Smart DRE em Ação</h2>
+                 <p class="text-lg text-gray-500 mt-2">Descubra em poucos minutos como nossa ferramenta pode transformar sua gestão.</p>
+            </div>
+            <div class="fade-in-section max-w-4xl mx-auto shadow-2xl rounded-2xl overflow-hidden content-card">
+                <div class="relative" style="padding-top: 56.25%;"> <!-- Proporção 16:9 -->
+                    <iframe 
+                        class="absolute top-0 left-0 w-full h-full" 
+                        src="https://www.youtube.com/embed/uFEJyU6i20Q?rel=0&showinfo=0" 
+                        title="Demonstração Smart DRE" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção "Perfeito para..." -->
+    <section id="tipos-negocio" class="py-20 header-gradient">
+        <div class="container mx-auto px-6 text-center">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Perfeito para qualquer tipo de negócio</h2>
+                <p class="text-lg text-blue-200 mt-2 max-w-2xl mx-auto">Seja qual for o seu ramo, a Smart DRE se adapta para te dar a clareza financeira que você precisa.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Card 1 -->
+                <div class="fade-in-section content-card bg-white/10 p-8 rounded-xl text-center border border-white/20 backdrop-blur-sm">
+                    <div class="text-white mb-4 inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Lojas e Varejo</h3>
+                </div>
+                <!-- Card 2 -->
+                <div class="fade-in-section content-card bg-white/10 p-8 rounded-xl text-center border border-white/20 backdrop-blur-sm" style="transition-delay: 100ms;">
+                     <div class="text-white mb-4 inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Prestadores de Serviço</h3>
+                </div>
+                <!-- Card 3 -->
+                <div class="fade-in-section content-card bg-white/10 p-8 rounded-xl text-center border border-white/20 backdrop-blur-sm" style="transition-delay: 200ms;">
+                     <div class="text-white mb-4 inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Autônomos e Freelancers</h3>
+                </div>
+                <!-- Card 4 -->
+                <div class="fade-in-section content-card bg-white/10 p-8 rounded-xl text-center border border-white/20 backdrop-blur-sm" style="transition-delay: 300ms;">
+                     <div class="text-white mb-4 inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M17 18h1"></path><path d="M12 18h1"></path><path d="M7 18h1"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Pequenas Indústrias</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prova Social -->
+    <section id="prova-social" class="py-20 header-gradient">
+         <div class="container mx-auto px-6 text-center">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">O que dizem os empreendedores que já usam a Smart DRE</h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Depoimento 1 -->
+                <div class="fade-in-section content-card bg-white p-8 rounded-xl text-left">
+                    <div class="text-yellow-400 flex mb-2">★★★★★</div>
+                    <p class="text-gray-600 mb-4">"A Smart DRE foi um divisor de águas. Agora, tenho clareza total do meu negócio em minutos. Recomendo demais!"</p>
+                    <p class="font-bold text-gray-800">João Silva</p>
+                </div>
+                <!-- Depoimento 2 -->
+                <div class="fade-in-section content-card bg-white p-8 rounded-xl text-left" style="transition-delay: 150ms;">
+                    <div class="text-yellow-400 flex mb-2">★★★★★</div>
+                    <p class="text-gray-600 mb-4">"Finalmente uma ferramenta que entende a realidade do pequeno negócio. É intuitiva e poderosa."</p>
+                    <p class="font-bold text-gray-800">Maria Costa</p>
+                </div>
+                <!-- Depoimento 3 -->
+                <div class="fade-in-section content-card bg-white p-8 rounded-xl text-left md:col-span-2 lg:col-span-1" style="transition-delay: 300ms;">
+                    <div class="text-yellow-400 flex mb-2">★★★★★</div>
+                    <p class="text-gray-600 mb-4">"Meu controle financeiro nunca foi tão organizado. O suporte é excelente e a ferramenta é fantástica."</p>
+                    <p class="font-bold text-gray-800">Ana Pereira</p>
+                </div>
+            </div>
+
+            <!-- Métricas Animadas -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+                <!-- Card 1 -->
+                <div class="fade-in-section text-center">
+                    <h3 class="text-5xl font-extrabold text-white mb-2"><span class="counter" data-target="2000">0</span>+</h3>
+                    <p class="text-blue-200 font-semibold">Empreendedores atendidos</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="fade-in-section text-center" style="transition-delay: 150ms;">
+                    <h3 class="text-5xl font-extrabold text-white mb-2"><span class="counter" data-target="98">0</span>%</h3>
+                    <p class="text-blue-200 font-semibold">Taxa de satisfação</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="fade-in-section text-center" style="transition-delay: 300ms;">
+                    <h3 class="text-5xl font-extrabold text-white mb-2"><span class="counter" data-target="4.8">0</span>★</h3>
+                    <p class="text-blue-200 font-semibold">Avaliação média</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Oferta -->
+    <section id="oferta" class="py-20 header-gradient">
+        <div class="container mx-auto px-6 text-center">
+            <div class="max-w-2xl mx-auto">
+                 <h2 class="text-3xl md:text-4xl font-bold text-white">Transforme sua gestão financeira hoje mesmo</h2>
+                 <p class="text-lg text-blue-200 mt-2 mb-10">Apenas um pagamento único para ter acesso completo à ferramenta que vai revolucionar o controle financeiro do seu negócio.</p>
+                 <div class="fade-in-section content-card bg-white rounded-2xl shadow-2xl p-8 md:p-10 text-gray-800">
+                    <p class="text-gray-500 line-through">R$ 497,90</p>
+                    <p class="text-5xl md:text-6xl font-extrabold text-gray-800 my-1">R$297,90</p>
+                    <p class="font-semibold text-gray-600 mb-8">Pagamento único • Sem mensalidades</p>
+                    
+                    <div class="grid sm:grid-cols-2 gap-x-8 gap-y-4 text-left text-gray-600 mb-12">
+                        <div class="flex items-center"><span class="text-green-500 mr-3">✔</span> DRE Automatizada completa</div>
+                        <div class="flex items-center"><span class="text-green-500 mr-3">✔</span> Dashboard visual profissional</div>
+                        <div class="flex items-center"><span class="text-green-500 mr-3">✔</span> Análise de receitas e custos</div>
+                        <div class="flex items-center"><span class="text-green-500 mr-3">✔</span> Projeções financeiras</div>
+                        <div class="flex items-center"><span class="text-green-500 mr-3">✔</span> Treinamento técnico incluído</div>
+                        <div class="flex items-center"><span class="text-green-500 mr-3">✔</span> Atualizações gratuitas</div>
+                        <div class="flex items-center"><span class="text-green-500 mr-3">✔</span> Acesso vitalício</div>
+                    </div>
+
+                     <a href="#" class="cta-button w-full max-w-sm mx-auto flex items-center justify-center text-white text-lg font-bold py-3 rounded-lg shadow-xl pulsating-button-animation" style="background-color: #153B59;">
+                        Quero minha Smart DRE agora
+                    </a>
+
+                    <div class="grid grid-cols-3 gap-4 text-gray-600 mt-12 max-w-lg mx-auto border-t border-gray-200 pt-6">
+                        <div class="text-center flex flex-col items-center">
+                            <svg class="w-8 h-8 mb-2 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span class="text-sm font-semibold">Compra 100% Segura</span>
+                        </div>
+                         <div class="text-center flex flex-col items-center">
+                            <svg class="w-8 h-8 mb-2 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path d="M12 14l9-5-9-5-9 5 9 5z" /><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-5.998 12.078 12.078 0 01.665-6.479L12 14z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-5.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222 4 2.222V20M12 14.778L16 12.556v3.222" /></svg>
+                            <span class="text-sm font-semibold">Treinamento Técnico</span>
+                        </div>
+                         <div class="text-center flex flex-col items-center">
+                            <svg class="w-8 h-8 mb-2 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 12c-2-2.67-4-4-6-4s-4 1.33-4 4 1.33 4 4 4 4-1.33 6-4c2 2.67 4 4 6 4s4-1.33 4-4-1.33-4-4-4-4 1.33-6 4z" />
+                            </svg>
+                            <span class="text-sm font-semibold">Acesso Vitalício</span>
+                        </div>
+                    </div>
+                 </div>
+                 <p class="text-blue-200 text-xs mt-8">
+                    <span class="font-bold">Oferta por tempo limitado.</span> Mais de 2.000 empreendedores já transformaram suas finanças.
+                 </p>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Footer -->
+    <footer class="text-center py-8 border-t">
+        <p class="text-gray-500">&copy; 2024 Smart DRE. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // Script para animações de entrada ao rolar a página
+        const sections = document.querySelectorAll('.fade-in-section');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Counter animation
+        const counterObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = +counter.getAttribute('data-target');
+                    let current = 0;
+                    const increment = target / 100; // Animation speed
+
+                    const updateCounter = () => {
+                        if (current < target) {
+                            current += increment;
+                            if (target % 1 !== 0) { // Check if target is a float
+                                counter.innerText = current.toFixed(1);
+                            } else {
+                                counter.innerText = Math.ceil(current);
+                            }
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            counter.innerText = target; // Ensure final value is accurate
+                        }
+                    };
+                    updateCounter();
+                    observer.unobserve(counter); // Stop observing after animation
+                }
+            });
+        }, {
+            threshold: 0.8
+        });
+
+        document.querySelectorAll('.counter').forEach(counter => {
+            counterObserver.observe(counter);
+        });
+
+    </script>
+</body>
+</html>
+
+
