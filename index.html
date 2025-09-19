@@ -482,6 +482,15 @@
     </footer>
 
     <script>
+
+         // Sempre começar a página do topo ao carregar/recarregar
+        window.onload = function() {
+            window.scrollTo(0, 0);
+        };
+        // Para navegadores que usam restauração de rolagem
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
         // Script para animações de entrada ao rolar a página
         const sections = document.querySelectorAll('.fade-in-section');
 
@@ -622,4 +631,5 @@
     </script>
 </body>
 </html>
+
 
